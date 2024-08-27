@@ -14,6 +14,7 @@ const pool = new Pool({
   ...clientOpts,
   user: process.env.DB_USER,
   database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
 });
 
 const app = express();
