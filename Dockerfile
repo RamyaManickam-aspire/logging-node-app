@@ -39,4 +39,4 @@ COPY . ./
 
 EXPOSE 8080
 # Run the web service on container startup.
-CMD [ "node", "index.mjs" ]
+CMD [ "node", "index.js" ]

@@ -1,7 +1,7 @@
 import express from "express";
 import pg from "pg";
 import { Connector } from "@google-cloud/cloud-sql-connector";
-
+const DEFAULT_TIMEOUT = 60 * 60 * 1000; // in ms
 const { Pool } = pg;
 
 const connector = new Connector();
@@ -28,8 +28,9 @@ app.get("/", async (req, res) => {
 });
 
 const port = parseInt(process.env.PORT) || 8080;
-app.listen(port, async () => {
+const server = app.listen(port, async () => {
   console.log("process.env: ", process.env);
+
   await pool.query(`CREATE TABLE IF NOT EXISTS visits (
     id SERIAL NOT NULL,
     created_at timestamp NOT NULL,
@@ -38,4 +39,4 @@ app.listen(port, async () => {
   console.log(`helloworld: listening on port ${port}`);
 });
 
-EOF;
+server.setTimeout(DEFAULT_TIMEOUT);
