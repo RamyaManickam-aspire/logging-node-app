@@ -1,8 +1,11 @@
-# Copyright 2021 Google LLC
+# Copyright 2019 Google LLC. All rights reserved.
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,10 +14,9 @@
 
 # Use the official lightweight Node.js image.
 # https://hub.docker.com/_/node
-FROM node:21-slim
-
+FROM node:20-slim
 # Create and change to the app directory.
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy application dependency manifests to the container image.
 # A wildcard is used to ensure both package.json AND package-lock.json are copied.
@@ -22,10 +24,19 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies.
-RUN npm install
+# if you need a deterministic and repeatable build create a
+# package-lock.json file and use npm ci:
+# RUN npm ci --omit=dev
+# if you need to include development dependencies during development
+# of your application, use:
+# RUN npm install --dev
+
+RUN npm install --omit=dev
+
 
 # Copy local code to the container image.
 COPY . ./
 
+EXPOSE 8080
 # Run the web service on container startup.
-ENTRYPOINT [ "node", "index.js" ]
+CMD [ "node", "index.js" ]
