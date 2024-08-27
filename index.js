@@ -39,4 +39,4 @@ const server = app.listen(port, async () => {
   console.log(`helloworld: listening on port ${port}`);
 });
 
-server.setTimeout(DEFAULT_TIMEOUT);
+server.setTimeout(500000);
